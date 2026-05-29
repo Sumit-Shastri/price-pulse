@@ -16,12 +16,14 @@ import requests
 """
 //////////////////////////////////////////////////////////////////////
 //  Method name : fetch_data()
+//  input       : url
+//  output      : html page text
 //////////////////////////////////////////////////////////////////////
 """
 
-def fetch_data(url):
+def fetch_data(url, headers = None):
 
-    r = requests.get(url)
+    r = requests.get(url, headers = headers)
     data = r.text
     return data
 
