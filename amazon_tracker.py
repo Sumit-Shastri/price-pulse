@@ -34,8 +34,9 @@ def amazon_parser(url, target):
 
     price = (soup.find("span", class_="a-price-whole")).get_text()
     actual_price = int(price.replace(",", "").replace(".", ""))
+    model_name = soup.find_all("span", class_="a-size-base po-break-word")[1].get_text()
 
-    return actual_price
+    return actual_price, model_name
 """
 //////////////////////////////////////////////////////////////////////
 //  END
