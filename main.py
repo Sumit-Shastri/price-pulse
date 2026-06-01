@@ -72,7 +72,13 @@ choose : """))
         if ecommerce_website == 1:
             print("===  Amazon  ===")
             try:
-                amazon_parser(url, target)
+                product_price, product_name = amazon_parser(url, target)
+                print("\n******************************************")
+                print(f"Product name : {product_name}")
+                print(f"Product price : {product_price}")
+                print(f"Your target price : {target}")
+                print(f"Current difference : {product_price - target}")
+                print("******************************************\n")
             except requests.exceptions.MissingSchema:
                 print("Something wrong with the url , try again")
                 continue
