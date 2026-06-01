@@ -81,3 +81,44 @@ def add_product(
     conn.close()
 
     return product_id
+
+def add_price_history(
+        product_id,
+        product_price
+):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT target_price
+    FROM products
+    WHERE id = ?
+                   """, (product_id,))
+
+    result = cursor.fetchone()
+
+    if result is None:
+        conn.close()
+
+        raise ValueError("Product not found")
+
+    target_price = result[0]
+
+    difference = (product_price - target_price)
+
+    cursor.execute("""
+    INSERT INTO price_history
+    (
+        product_id,
+        product_price,
+        difference
+    )
+    VALUES (?, ?, ?)
+                   """, (
+        product_id,
+        product_price,
+        difference
+    ))
+
+    conn.commit()
+    conn.close()
