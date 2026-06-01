@@ -4,11 +4,17 @@
 //////////////////////////////////////////////////////////////////////
 """
 
+import os
+from datetime import datetime
+import pandas
 
 """
 //////////////////////////////////////////////////////////////////////
 //  Method name     : product_price_tracker()
-//  input           : price         -->    current price of product
+//  input           : product_name         
+//                    product_price
+//                    target
+//                    difference
 //  output          : csv file having columns : 1. srno
 //                                              2. date
 //                                              3. day
@@ -26,8 +32,63 @@
 //////////////////////////////////////////////////////////////////////
 """
 
-def product_price_tracker(price):
-    print("Coming soon")
+def product_price_tracker(product_name,
+                          product_price,
+                          target = None
+                         ):
+    filename = f"{product_name}.csv"
+
+    now = datetime.now()
+    current_date = now.strftime("%Y-%m-%d")
+    current_day = now.strftime("%A")
+    current_time = now.strftime("%H:%M:%S")
+
+    # If File doesnt exists
+    if not os.path.exists(filename):
+
+        if target is None:
+            raise ValueError("Target price is required.")
+
+        difference = product_price - target
+
+        df = pandas.DataFrame([{
+            "srno" : 1,
+            "date" : current_date,
+            "day" : current_day,
+            "time" : current_time,
+            "product_price" : product_price,
+            "difference" : difference,
+            "target" : target
+        }])
+
+        df.to_csv(filename, index = False)
+
+        print(f"{filename} created successfully .")
+
+    # File already exists
+
+    else:
+
+        df = pandas.read_csv(filename)
+
+        target = df.iloc[0]['target']
+        difference = product_price - target
+
+        new_row = {
+            "srno" : len(df) + 1,
+            "date" : current_date,
+            "day" : current_day,
+            "time" : current_time,
+            "product_price" : product_price,
+            "difference" : difference,
+            "target" : target
+        }
+
+        df.loc[len(df)] = new_row
+        df.to_csv(filename, index = False)
+
+        print(f"New entry added to {filename}.")
+
 """
 //////////////////////////////////////////////////////////////////////
 //  END

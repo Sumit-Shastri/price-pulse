@@ -5,12 +5,17 @@
 """
 import requests
 from amazon_tracker import amazon_parser
+from utils import product_price_tracker
+import os
+from database import initialize_database
 
 """
 //////////////////////////////////////////////////////////////////////
 //  Main
 //////////////////////////////////////////////////////////////////////
 """
+
+initialize_database()
 
 print("**********************************")
 print("---   Welcome to price-pulse  ---")
@@ -73,12 +78,20 @@ choose : """))
             print("===  Amazon  ===")
             try:
                 product_price, product_name = amazon_parser(url, target)
+
+                filename = f"{product_name}.csv"
+                if os.path.exists(f"history_csv_files/{filename}"):
+                    print("This product is already being tracked.\n")
+                    continue
+
                 print("\n******************************************")
                 print(f"Product name : {product_name}")
                 print(f"Product price : {product_price}")
                 print(f"Your target price : {target}")
                 print(f"Current difference : {product_price - target}")
                 print("******************************************\n")
+                product_price_tracker(product_name, product_price, target)
+
             except requests.exceptions.MissingSchema:
                 print("Something wrong with the url , try again")
                 continue
