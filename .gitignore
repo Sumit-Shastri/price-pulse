@@ -1,2 +1,5 @@
-.venv
 price_pulse.db
+__pycache__/
+*.pyc
+.venv/
+venv/
