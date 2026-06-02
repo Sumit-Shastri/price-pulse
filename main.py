@@ -8,6 +8,8 @@ from amazon_tracker import amazon_parser
 from database import initialize_database
 from database import add_product
 from database import add_price_history
+from database import get_product_by_url
+from database import get_all_products
 
 """
 //////////////////////////////////////////////////////////////////////
@@ -79,17 +81,35 @@ choose : """))
             try:
                 product_price, product_name = amazon_parser(url, target)
 
-                product_id = add_product(
-                    product_name,
-                    url,
-                    "Amazon",
-                    target
-                )
+                existing_product = get_product_by_url(url)
 
-                add_price_history(
-                    product_id,
-                    product_price
-                )
+                if existing_product:
+
+                    product_id = existing_product[0]
+
+                    add_price_history(
+                        product_id,
+                        product_price
+                    )
+
+                else:
+
+                    product_id = add_product(
+                        product_name,
+                        url,
+                        "Amazon",
+                        target
+                    )
+
+                    add_price_history(
+                        product_id,
+                        product_price
+                    )
+
+                    tracked_products = get_all_products()
+                    print("Products in your list : ")
+                    for product in tracked_products:
+                        print(product)
 
                 print("\n******************************************")
                 print(f"Product name : {product_name}")

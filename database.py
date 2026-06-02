@@ -51,13 +51,13 @@ def add_product(
     SELECT id
     FROM products
     WHERE product_url = ?
-                   """, (product_url))
+                   """, (product_url,))
 
     if cursor.fetchone():
 
         conn.close()
 
-        raise ValueError("This product is already beign tracked.")
+        raise ValueError("This product is already being tracked.")
 
     cursor.execute("""
     INSERT INTO products
@@ -122,3 +122,34 @@ def add_price_history(
 
     conn.commit()
     conn.close()
+
+def get_product_by_url(url):
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT *
+    FROM products
+    WHERE product_url = ?""",
+                   (url,))
+
+
+    product = cursor.fetchone()
+    conn.close()
+
+    return product
+
+def get_all_products():
+
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT id, product_name, website, target_price, created_at
+    FROM products""")
+
+    products = cursor.fetchall()
+    conn.close()
+
+    return products
