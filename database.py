@@ -146,7 +146,7 @@ def get_all_products():
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT id, product_name, website, target_price, created_at
+    SELECT *
     FROM products""")
 
     products = cursor.fetchall()

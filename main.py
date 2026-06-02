@@ -79,7 +79,7 @@ choose : """))
         if ecommerce_website == 1:
             print("===  Amazon  ===")
             try:
-                product_price, product_name = amazon_parser(url, target)
+                product_price, product_name = amazon_parser(url)
 
                 existing_product = get_product_by_url(url)
 
@@ -142,7 +142,9 @@ choose : """))
             print("Incorrect choice try again")
 
     elif choice == 2:
-        print("Feature coming soon.")
+        print("===  Watchlist  ===\n")
+        get_all_products()
+
 
     elif choice == 3:
         print("Exiting...")
