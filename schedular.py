@@ -1,8 +1,12 @@
 from database import get_all_products
 from database import add_price_history
 from amazon_tracker import amazon_parser
+from database import initialize_database
+
+
 
 def main():
+        initialize_database()
         products = get_all_products()
 
         try:
