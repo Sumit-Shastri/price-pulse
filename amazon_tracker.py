@@ -24,6 +24,10 @@ def amazon_parser(url):
     }
 
     data = fetch_data(url, headers)
+
+    with open("debug.html", "w") as f:
+        f.write(data)
+
     soup = BeautifulSoup(data, 'html.parser')
 
     # for debugging purpose
@@ -32,7 +36,17 @@ def amazon_parser(url):
     #with open("amazon_site.html", "w") as f:
     #    f.write(soup.prettify())
 
-    price = (soup.find("span", class_="a-price-whole")).get_text()
+    price_tag = soup.find(
+        "span",
+        class_="a-price-whole"
+    )
+
+    if price_tag is None:
+        raise ValueError(
+            "Could not find price on page"
+        )
+
+    price = price_tag.get_text()
     actual_price = int(price.replace(",", "").replace(".", ""))
     model_name = soup.find_all("span", class_="a-size-base po-break-word")[1].get_text()
 
