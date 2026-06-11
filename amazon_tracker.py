@@ -13,6 +13,20 @@ from bs4 import BeautifulSoup
 //////////////////////////////////////////////////////////////////////
 """
 
+"""
+////////////////////////////////////////////////////////////////////
+//  Method Name     : amazon_parser()
+//  Input           : url           -->     link of product
+//  Output          : Integer       -->     fetched real time price
+//                                          of product
+//  Description     : This function accept url of product , then 
+//                    load the webpage and parse the price of
+//                    product, And return it.
+//  Author          : Sumit Shastri
+//  Date            : 12/06/2026
+////////////////////////////////////////////////////////////////////
+"""
+
 def amazon_parser(url):
 
     headers = {
@@ -25,8 +39,8 @@ def amazon_parser(url):
 
     data = fetch_data(url, headers)
 
-    with open("debug.html", "w") as f:
-        f.write(data)
+    #with open("debug.html", "w") as f:
+    #    f.write(data)
 
     soup = BeautifulSoup(data, 'html.parser')
 
@@ -48,9 +62,8 @@ def amazon_parser(url):
 
     price = price_tag.get_text()
     actual_price = int(price.replace(",", "").replace(".", ""))
-    model_name = soup.find_all("span", class_="a-size-base po-break-word")[1].get_text()
 
-    return actual_price, model_name
+    return actual_price
 """
 //////////////////////////////////////////////////////////////////////
 //  END

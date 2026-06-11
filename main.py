@@ -3,6 +3,7 @@
 //  Imports
 //////////////////////////////////////////////////////////////////////
 """
+
 import requests
 from amazon_tracker import amazon_parser
 from database import initialize_database
@@ -17,14 +18,13 @@ from database import get_all_products
 //////////////////////////////////////////////////////////////////////
 """
 
-initialize_database()
+initialize_database()                                       # generates database
 
 print("**********************************")
 print("---   Welcome to price-pulse  ---")
-print("**********************************")
+print("**********************************\n")
 
 while True:
-
 
     menu = """
 1. Track product
@@ -76,10 +76,19 @@ choose : """))
 
         print("----------------------------------------------------------------\n")
 
+        while True:
+            alias_product_name = input("Enter alias for your product : ")
+
+            if alias_product_name == "":
+                print("Name cannot be empty.")
+                print("Usage eg. : Fastrack watch 1\n")
+            else:
+                break
+
         if ecommerce_website == 1:
             print("===  Amazon  ===")
             try:
-                product_price, product_name = amazon_parser(url)
+                product_price = amazon_parser(url)
 
                 existing_product = get_product_by_url(url)
 
@@ -95,7 +104,7 @@ choose : """))
                 else:
 
                     product_id = add_product(
-                        product_name,
+                        alias_product_name,
                         url,
                         "Amazon",
                         target
